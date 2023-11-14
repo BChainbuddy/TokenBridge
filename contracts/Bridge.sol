@@ -2,8 +2,14 @@
 
 pragma solidity ^0.8.18;
 
-import "@openzeppelin/contracts/interfaces/IERC20.sol";
+// import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+
+interface IERC20 {
+    function bridgeBurn(address account, uint256 amount) external;
+
+    function bridgeMint(address account, uint256 amount) external;
+}
 
 contract TokenBridge {
     IERC20 public immutable token;
@@ -44,7 +50,7 @@ contract TokenBridge {
             verifySignature(_address, hashedMessage, signature),
             "This transaction was not verified"
         ); // To check if the sender has signed the hash
-        // token.burn(msg.sender, _amount); // NEED TO ADD CUSTOM INTERFACE
+        token.bridgeBurn(msg.sender, _amount); // NEED TO ADD CUSTOM INTERFACE
         nonceInProgress[_address][currentNonce[_address]] = true; // The nonce is in progress
 
         // Transfer event for automatic send and receive
@@ -71,7 +77,7 @@ contract TokenBridge {
             verifySignature(_address, hashedMessage, signature),
             "This transaction was not verified"
         ); // To check if the sender has signed the hash
-        // token.mint(); // NEED TO ADD CUSTOM INTERFACE
+        token.bridgeMint(msg.sender, _amount); // NEED TO ADD CUSTOM INTERFACE
 
         // Transfer event for automatic send and receive
         emit Transfer(
