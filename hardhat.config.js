@@ -19,6 +19,8 @@ const GOERLI_RPC_URL =
   "https://eth-goerli.g.alchemy.com/v2/v7gysm05jc_5bbc2w0h3g-OqsHGY9K-v";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || "";
+const MATIC_MUMBAI_RPC_URL = process.env.MATIC_MUMBAI_RPC_URL || "";
 
 module.exports = {
   defaultNetwork: "hardhat",
@@ -43,6 +45,13 @@ module.exports = {
       chainId: 5,
       blockConfirmations: 6,
     },
+    mumbai: {
+      url: MATIC_MUMBAI_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 80001,
+      blockConfirmations: 6,
+      saveDeployments: true,
+    },
   },
   solidity: {
     compilers: [
@@ -58,7 +67,10 @@ module.exports = {
     ],
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      polygonMumbai: POLYGONSCAN_API_KEY,
+      sepolia: ETHERSCAN_API_KEY,
+    },
   },
   gasReporter: {
     enabled: true,

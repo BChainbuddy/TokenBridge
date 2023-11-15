@@ -42,7 +42,7 @@ contract TokenBridge {
         bytes calldata signature
     ) external {
         require(
-            nonceInProgress[_address][currentNonce[_address]] == false,
+            nonceInProgress[_address][getCurrentNonce(_address)] == false,
             "Transaction hasn't been completed yet"
         ); //If the last nonce was in progress, the user can't send additional cryptocurrency.
         bytes32 hashedMessage = messageHash(_address, _amount);
@@ -51,13 +51,13 @@ contract TokenBridge {
             "This transaction was not verified"
         ); // To check if the sender has signed the hash
         token.bridgeBurn(msg.sender, _amount); // NEED TO ADD CUSTOM INTERFACE
-        nonceInProgress[_address][currentNonce[_address]] = true; // The nonce is in progress
+        nonceInProgress[_address][getCurrentNonce(_address)] = true; // The nonce is in progress
 
         // Transfer event for automatic send and receive
         emit Transfer(
             _address,
             _amount,
-            currentNonce[_address],
+            getCurrentNonce(_address),
             signature,
             transferType.SEND
         );
@@ -69,7 +69,7 @@ contract TokenBridge {
         bytes calldata signature
     ) external {
         require(
-            nonceInProgress[_address][currentNonce[_address]] == true,
+            nonceInProgress[_address][getCurrentNonce(_address)] == true,
             "The address hasn't sent any tokens"
         );
         bytes32 hashedMessage = messageHash(_address, _amount);
@@ -83,7 +83,7 @@ contract TokenBridge {
         emit Transfer(
             _address,
             _amount,
-            currentNonce[_address],
+            getCurrentNonce(_address),
             signature,
             transferType.RECEIVE
         );
@@ -102,7 +102,7 @@ contract TokenBridge {
                 abi.encodePacked(
                     "\x19\x01", // Ethereum prefix for message format
                     keccak256(
-                        abi.encode(_address, amount, currentNonce[_address])
+                        abi.encode(_address, amount, getCurrentNonce(_address))
                     ) // Adds the current nonce of the address automaticaly
                 )
             );
