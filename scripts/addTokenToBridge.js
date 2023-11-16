@@ -8,7 +8,7 @@ async function addTokensToBridge() {
   tokenContract = await ethers.getContract("Token");
   console.log(`The contract addreses for ${network.name} have been received!`);
   console.log(`Adding the ${bridgeContract.target} to ${tokenContract.target}`);
-  await tokenContract.addTokenBridgeAddress(bridgeContract.target);
+  await tokenContract.addTokenBridgeAddress(bridgeContract.address);
   console.log("The bridge contract was successfuly added!");
 }
 

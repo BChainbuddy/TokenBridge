@@ -9,7 +9,7 @@ contract Token is ERC20 {
         owner = msg.sender;
     }
 
-    address private tokenBridge;
+    address public tokenBridge;
     address private immutable owner;
 
     modifier isTokenBridge() {
@@ -52,5 +52,9 @@ contract Token is ERC20 {
         uint256 amount
     ) external isTokenBridge {
         _burn(account, amount);
+    }
+
+    function tokenBridgeAddress() public view returns (address) {
+        return tokenBridge;
     }
 }

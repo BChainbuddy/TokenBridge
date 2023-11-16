@@ -10,7 +10,7 @@ module.exports = async function deployToken({ getNamedAccounts, deployments }) {
   const args = [];
 
   log(`Deploying the token contract on ${network.name}`);
-  const bridgeContract = await deploy("Token", {
+  const tokenContract = await deploy("Token", {
     from: deployer,
     log: true,
     args: args,
@@ -19,11 +19,11 @@ module.exports = async function deployToken({ getNamedAccounts, deployments }) {
   log("Contract deployed!!!");
   if (network.config.chainId == 80001) {
     log("This contract was deployed to Mumbai testnet");
-    await verify(bridgeContract.target, args);
+    await verify(tokenContract.address, args);
   }
   if (network.config.chainId == 11155111) {
     log("This contract was deployed to Sepolia testnet");
-    await verify(bridgeContract.target, args);
+    await verify(tokenContract.address, args);
   }
 };
 
