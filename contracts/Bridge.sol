@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.18;
 
-// import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 interface IERC20 {
@@ -99,12 +98,8 @@ contract TokenBridge {
     ) public view returns (bytes32) {
         return
             keccak256(
-                abi.encodePacked(
-                    "\x19\x01", // Ethereum prefix for message format
-                    keccak256(
-                        abi.encode(_address, amount, getCurrentNonce(_address))
-                    ) // Adds the current nonce of the address automaticaly
-                )
+                abi.encodePacked(_address, amount, getCurrentNonce(_address))
+                // Adds the current nonce of the address automaticaly
             );
     }
 
@@ -113,8 +108,9 @@ contract TokenBridge {
         address signer,
         bytes32 hashedMessage,
         bytes calldata signature
-    ) internal pure returns (bool) {
-        return signer == hashedMessage.recover(signature);
+    ) public pure returns (bool) {
+        return
+            signer == hashedMessage.toEthSignedMessageHash().recover(signature);
     }
 
     // Return the current nonce

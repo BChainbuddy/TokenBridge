@@ -57,4 +57,9 @@ contract Token is ERC20 {
     function tokenBridgeAddress() public view returns (address) {
         return tokenBridge;
     }
+
+    //MINT TOKENS
+    function mintTokens(address _address, uint256 _amount) public onlyOwner {
+        _mint(_address, _amount);
+    }
 }

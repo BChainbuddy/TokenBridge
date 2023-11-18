@@ -34,12 +34,14 @@ module.exports = async function deployBridge({
 
   // ADDING THE TOKEN ADDRESS TO THE BRIDGE TO ENABLE MINT AND BURN
   console.log("---------------------------");
+  console.log("Script to add the token to bridgeContract");
   console.log(`The contract addreses for ${network.name} have been received!`);
   console.log(
     `Adding the ${bridgeContract.address} to ${tokenContract.target}`
   );
   await tokenContract.addTokenBridgeAddress(bridgeContract.address);
   console.log("The bridge contract was successfuly added!");
+  console.log("---------------------------");
 };
 
 module.exports.tags = ["all", "bridge"];
